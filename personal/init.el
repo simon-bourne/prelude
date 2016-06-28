@@ -202,7 +202,12 @@
   (setq interprogram-cut-function nil))
 
 (require 'neotree)
+(require 'projectile)
+
 (global-set-key [f8] 'neotree-toggle)
+(global-set-key [f9] 'neotree-projectile-action)
+(setq neo-smart-open t)
+(setq projectile-switch-project-action 'neotree-projectile-action)
 
 ;; Indentation style
 (setq-default c-basic-offset 4)
