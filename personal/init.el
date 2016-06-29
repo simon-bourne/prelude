@@ -1,13 +1,16 @@
-(prelude-require-packages '(
-  solarized-theme
-  intero
-  irony
-  company-irony
-  company-irony-c-headers
-  irony-eldoc
-  flycheck-irony
-  neotree
-  rtags))
+(prelude-require-packages
+ '(
+   clang-format
+   solarized-theme
+   intero
+   irony
+   company-irony
+   company-irony-c-headers
+   irony-eldoc
+   flycheck-irony
+   neotree
+   goto-chg
+   rtags))
 
 (add-to-list 'load-path "~/.emacs.d/rtags/build/src")
 
@@ -163,13 +166,13 @@
   (setq dirname (upward-find-file build-command "."))
   (setq arg-list (if args (concat " " args) ""))
 
-					; We've now worked out where to start. Now we need to worry about
-					; calling compile in the right directory
+                                        ; We've now worked out where to start. Now we need to worry about
+                                        ; calling compile in the right directory
   (when dirname (save-excursion
-		  (setq dir-buffer (find-file-noselect dirname))
-		  (set-buffer dir-buffer)
-		  (compile (concat (file-name-as-directory dirname) build-command arg-list))
-		  (kill-buffer dir-buffer))))
+                  (setq dir-buffer (find-file-noselect dirname))
+                  (set-buffer dir-buffer)
+                  (compile (concat (file-name-as-directory dirname) build-command arg-list))
+                  (kill-buffer dir-buffer))))
 
 (defun upward-find-file (filename startdir)
   "Move up directories until we find a certain filename. If we
@@ -178,22 +181,20 @@
   nil. Start at startdir or . if startdir not given"
 
   (let ((dirname (expand-file-name startdir))
-	(found nil) ; found is set as a flag to leave loop if we find it
-	(top nil))  ; top is set when we get
-		    ; to / so that we only check it once
+        (found nil) ; found is set as a flag to leave loop if we find it
+        (top nil))  ; top is set when we get to / so that we only check it once
 
     ; While we've neither been at the top last time nor have we found
     ; the file.
     (while (not (or found top))
       ; If we're at / set top flag.
       (if (string= (expand-file-name dirname) "/")
-	  (setq top t))
+          (setq top t))
 
       ; Check for the file
       (if (file-exists-p (expand-file-name filename dirname))
-	  (setq found t)
-	; If not, move up a directory
-	(setq dirname (expand-file-name ".." dirname))))
+          (setq found t)
+        (setq dirname (expand-file-name ".." dirname)))) ; If not, move up a directory
     ; return statement
     (if found dirname nil)))
 
@@ -250,3 +251,43 @@
 (add-hook 'c++-mode-common-hook 'rtags-start-process-unless-running)
 
 (setq compilation-scroll-output t)
+
+(require 'clang-format)
+(define-key c-mode-base-map (kbd "<C-S-tab>") (function clang-format-region))
+(define-key c-mode-base-map (kbd "<C-tab>") (function clang-format-buffer))
+
+(setq prelude-flyspell nil)
+(setq prelude-guru nil)
+
+;; Disable smartparens keys
+(require 'smartparens)
+(custom-set-variables
+ '(sp-override-key-bindings (quote (("C-<right>") ("C-<left>")))))
+
+(require 'misc)
+(global-set-key [C-right] 'forward-to-word)
+
+;; Kill words
+(global-set-key [C-backspace] 'backward-kill-word)
+(global-set-key [C-delete] 'kill-word)
+
+;; Kill to start/end of line
+(global-set-key [M-backspace] (lambda nil (interactive) (kill-line 0)))
+(global-set-key [M-delete] 'kill-line)
+
+;; Window moving
+(global-set-key [M-left] 'windmove-left)
+(global-set-key [M-right] 'windmove-right)
+(global-set-key [M-up] 'windmove-up)
+(global-set-key [M-down] 'windmove-down)
+
+;; Unset crazy prelude keybindings for window moving
+(global-unset-key [S-left])
+(global-unset-key [S-right])
+(global-unset-key [S-up])
+(global-unset-key [S-down])
+
+;; Undo navigation
+(require 'goto-chg)
+(global-set-key [S-M-left] 'goto-last-change)
+(global-set-key [S-M-right] 'goto-last-change-reverse)
