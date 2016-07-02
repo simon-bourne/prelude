@@ -291,3 +291,10 @@
 (require 'goto-chg)
 (global-set-key [S-M-left] 'goto-last-change)
 (global-set-key [S-M-right] 'goto-last-change-reverse)
+
+(require 'buffer-stack)
+(global-set-key [C-tab] 'buffer-stack-down)
+(global-set-key [C-iso-lefttab] 'buffer-stack-up)
+
+(global-set-key [(C-f6)] 'ido-switch-buffer)
+(global-set-key [(f6)] 'projectile-find-file)
