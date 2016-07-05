@@ -23,6 +23,9 @@
 
 (add-hook 'haskell-mode-hook 'intero-mode)
 
+(eval-after-load 'haskell-mode
+   '(define-key haskell-mode-map (kbd "M-,") (function xref-pop-marker-stack)))
+
 (setq inhibit-startup-message t)
 
 (custom-set-variables
@@ -240,10 +243,12 @@
 (setq rtags-autostart-diagnostics t)
 
 (define-key c-mode-base-map (kbd "M-.") (function rtags-find-symbol-at-point))
-(define-key c-mode-base-map (kbd "M-,") (function rtags-find-references-at-point))
+(define-key c-mode-base-map (kbd "M->") (function rtags-find-references-at-point))
+(define-key c-mode-base-map (kbd "M-,") (function rtags-location-stack-back))
+
 ;;(define-key c-mode-base-map (kbd "M-;") (function tags-find-file))
 (define-key c-mode-base-map (kbd "C-.") (function rtags-find-symbol))
-(define-key c-mode-base-map (kbd "C-,") (function rtags-find-references))
+(define-key c-mode-base-map (kbd "C->") (function rtags-find-references))
 (define-key c-mode-base-map (kbd "C-<") (function rtags-find-virtuals-at-point))
 (define-key c-mode-base-map (kbd "M-i") (function rtags-imenu))
 
@@ -253,8 +258,7 @@
 (setq compilation-scroll-output t)
 
 (require 'clang-format)
-(define-key c-mode-base-map (kbd "<C-S-tab>") (function clang-format-region))
-(define-key c-mode-base-map (kbd "<C-tab>") (function clang-format-buffer))
+(define-key c-mode-base-map (kbd "C-x <C-tab>") (function clang-format-buffer))
 
 (setq prelude-flyspell nil)
 (setq prelude-guru nil)
