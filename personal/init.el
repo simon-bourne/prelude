@@ -23,6 +23,13 @@
 
 (add-hook 'haskell-mode-hook 'intero-mode)
 
+
+(add-to-list 'load-path "~/.emacs.d/hindent/elisp")
+(require 'hindent)
+(add-hook 'haskell-mode-hook #'hindent-mode)
+(setq hindent-style "johan-tibell")
+(setq hindent-process-path "~/.emacs.d/hindent/bin/hindent")
+
 (eval-after-load 'haskell-mode
    '(define-key haskell-mode-map (kbd "M-,") (function xref-pop-marker-stack)))
 
