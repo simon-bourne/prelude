@@ -31,7 +31,10 @@
 (setq hindent-process-path "~/.emacs.d/hindent/bin/hindent")
 
 (eval-after-load 'haskell-mode
-   '(define-key haskell-mode-map (kbd "M-,") (function xref-pop-marker-stack)))
+  '(define-key haskell-mode-map (kbd "M-,") (function xref-pop-marker-stack)))
+
+(eval-after-load 'haskell-mode
+   '(define-key haskell-mode-map (kbd "C-x <C-tab>") (function hindent-reformat-buffer)))
 
 (setq inhibit-startup-message t)
 
