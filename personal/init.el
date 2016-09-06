@@ -10,9 +10,12 @@
    flycheck-irony
    neotree
    goto-chg
-   rtags))
+   rtags
+   persistent-scratch))
 
 (add-to-list 'load-path "~/.emacs.d/rtags/build/src")
+
+(persistent-scratch-setup-default)
 
 (require 'prelude-haskell)
 (require 'projectile)
