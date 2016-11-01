@@ -13,6 +13,7 @@
    rtags
    persistent-scratch))
 
+(setq prelude-whitespace nil)
 (add-to-list 'load-path "~/.emacs.d/rtags/build/src")
 
 (persistent-scratch-setup-default)
@@ -96,6 +97,7 @@
 
 (require 'company-irony-c-headers)
 ;; Load with `irony-mode` as a grouped backend
+(setq company-backends (delete 'company-semantic company-backends))
 (eval-after-load 'company
   '(add-to-list
     'company-backends '(company-irony-c-headers company-irony)))
@@ -154,7 +156,7 @@
 (defun build ()
   "Run the closest build command."
   (interactive)
-  (build-gcc-release))
+  (build-clang-release))
 
 (defun build-gcc-release ()
   "Run the closest build command."
