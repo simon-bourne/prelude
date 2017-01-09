@@ -1,7 +1,6 @@
 (prelude-require-packages
  '(
    clang-format
-   solarized-theme
    intero
    irony
    company-irony
